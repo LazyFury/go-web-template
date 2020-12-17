@@ -8,7 +8,7 @@ import (
 )
 
 // ReadConfig ReadConfig
-func ReadConfig(data interface{}, path string) {
+func ReadConfig(data interface{}, path string) interface{} {
 	f, err := os.Open(path)
 	defer f.Close()
 	if err != nil {
@@ -18,4 +18,5 @@ func ReadConfig(data interface{}, path string) {
 	if err = json.NewDecoder(f).Decode(data); err != nil {
 		panic(err)
 	}
+	return data
 }
