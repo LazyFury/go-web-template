@@ -7,6 +7,18 @@ import (
 	"os"
 )
 
+type (
+	// BaseConfig BaseConfig
+	BaseConfig struct {
+		TablePrefix string `json:"table_prefix"` //数据库表前缀
+		BaseURL     string `json:"base_url"`     // 网站根目录
+		Port        int    `json:"port"`         //端口
+
+		IV  string `json:"iv"`
+		KEY string `json:"key"`
+	}
+)
+
 // ReadConfig ReadConfig
 func ReadConfig(data interface{}, path string) interface{} {
 	f, err := os.Open(path)
