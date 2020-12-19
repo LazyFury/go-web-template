@@ -13,6 +13,29 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+// Controller ModelInterface
+type Controller interface {
+	// add update 验证
+	Validator() error
+	// 表名
+	TableName() string
+	// 自身实例 用于found one
+	Object() interface{}
+	// 自身实例 用于found list
+	Objects() interface{}
+
+	// 以下三个方法用于辅助默认方法实现curd，过于复杂的直接override
+	// Where 搜索条件
+	Search(db *gorm.DB, key string) *gorm.DB
+	// 查询的补充条件
+	Joins(db *gorm.DB) *gorm.DB
+	// 处理列表返回结果
+	Result(data interface{}) interface{}
+
+	SetCode() error
+	SetUser(c *gin.Context) error
+}
+
 type (
 	// Middleware 查询中间操作
 	Middleware func(db *gorm.DB) *gorm.DB

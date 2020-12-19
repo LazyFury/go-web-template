@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Treblex/go-echo-demo/server/model"
 	"github.com/Treblex/go-echo-demo/server/utils"
 	"github.com/Treblex/go-web-template/xmodel"
 	"github.com/gin-gonic/gin"
@@ -31,7 +30,7 @@ type (
 	// Controller Controller
 	Controller struct {
 		DB    *xmodel.GormDB
-		Model model.Controller
+		Model xmodel.Controller
 		Auth
 	}
 	// Auth CheckUser
@@ -75,7 +74,7 @@ func (t *Controller) Update(c *gin.Context) {
 	if id == "" {
 		panic("请输入id")
 	}
-	obj := t.Model.Object().(model.Controller)
+	obj := t.Model.Object().(xmodel.Controller)
 	where := map[string]interface{}{
 		"id": id,
 	}
@@ -101,7 +100,7 @@ func (t *Controller) Delete(c *gin.Context) {
 	if id == "" {
 		panic("请输入id")
 	}
-	obj := t.Model.Object().(model.Controller)
+	obj := t.Model.Object().(xmodel.Controller)
 	row := t.DB.Where(map[string]interface{}{
 		"id": id,
 	})
@@ -117,7 +116,7 @@ func (t *Controller) Delete(c *gin.Context) {
 
 // Add Add
 func (t *Controller) Add(c *gin.Context) {
-	obj := t.Model.Object().(model.Controller)
+	obj := t.Model.Object().(xmodel.Controller)
 	if err := c.ShouldBind(obj); err != nil {
 		if err == io.EOF {
 			panic("没有传入参数，请使用post json传入参数")
