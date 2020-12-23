@@ -34,13 +34,13 @@ type (
 		Auth
 	}
 	// Auth CheckUser
-	Auth func(c *gin.Context) xmodel.Middleware
+	Auth func(c *gin.Context, must bool) xmodel.Middleware
 )
 
 // GetAuth GetAuth
 func (t *Controller) GetAuth() Auth {
 	if t.Auth == nil {
-		return func(c *gin.Context) xmodel.Middleware {
+		return func(c *gin.Context, must bool) xmodel.Middleware {
 			return func(db *gorm.DB) *gorm.DB {
 				return db
 			}
@@ -78,7 +78,7 @@ func (t *Controller) Update(c *gin.Context) {
 	where := map[string]interface{}{
 		"id": id,
 	}
-	auth := t.GetAuth()(c)
+	auth := t.GetAuth()(c, true)
 	if err := auth(t.DB.Where(where)).First(obj).Error; err != nil {
 		panic(err)
 	}
@@ -104,7 +104,7 @@ func (t *Controller) Delete(c *gin.Context) {
 	row := t.DB.Where(map[string]interface{}{
 		"id": id,
 	})
-	row = t.GetAuth()(c)(row)
+	row = t.GetAuth()(c, true)(row)
 	if err := row.Delete(obj).Error; err != nil {
 		panic(err)
 	}
@@ -149,7 +149,7 @@ func (t *Controller) DefaultListPaging(c *gin.Context, midd xmodel.Middleware) {
 		func(db *gorm.DB) *gorm.DB { return db.Select([]string{"*"}) },
 		func(db *gorm.DB) *gorm.DB {
 			return t.Model.Joins(db)
-		}, midd, t.GetAuth()(c),
+		}, midd, t.GetAuth()(c, true),
 		func(db *gorm.DB) *gorm.DB {
 			return db.Order("updated_at desc,created_at desc,id desc")
 		})
@@ -160,7 +160,7 @@ func (t *Controller) ListAll(c *gin.Context) {
 	obj := t.Model.Objects()
 	objModel := t.DB.GetObjectsOrEmpty(obj, nil, func(db *gorm.DB) *gorm.DB {
 		return t.Model.Joins(db).Select([]string{"*"})
-	}, t.GetAuth()(c))
+	}, t.GetAuth()(c, true))
 	if err := objModel.All(); err != nil {
 		panic(err)
 	}
@@ -183,7 +183,7 @@ func (t *Controller) Detail(c *gin.Context) {
 		return db.Or(map[string]interface{}{
 			"code": id,
 		})
-	}, t.GetAuth()(c)); err != nil {
+	}, t.GetAuth()(c, true)); err != nil {
 		panic(tools.NotFound)
 	}
 	obj = t.Model.Result(obj)

@@ -13,6 +13,7 @@ type AliOssConf struct {
 	AccessKeyID     string `json:"access_key_id"`
 	AccessKeySecret string `json:"Access_key_secret"`
 	URL             string `json:"url"`
+	Bucket          string `json:"bucket"`
 }
 
 // NewAliOssUploader 阿里云上传
@@ -35,7 +36,7 @@ func (a *AliOssConf) aliyunOssUpload(name string, file io.Reader) (path string, 
 	if err != nil {
 		panic(err)
 	}
-	bucket, err := client.Bucket("suke100")
+	bucket, err := client.Bucket(a.Bucket)
 	if err != nil {
 		panic(err)
 	}

@@ -4,7 +4,7 @@ package upload
 func NewEchoUploader() *Uploader {
 	return &Uploader{
 		BaseDir:      "./static/upload",
-		UploadMethod: defaultUpload,
-		GetFile:      defaultGetFile,
+		UploadMethod: DefaultUpload,
+		GetFile:      DefaultGetFile,
 	}
 }
