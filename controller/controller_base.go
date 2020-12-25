@@ -113,6 +113,8 @@ func (t *Controller) Delete(c *gin.Context) {
 // Add Add
 func (t *Controller) Add(c *gin.Context) {
 	obj := t.Model.Object().(xmodel.Controller)
+	obj.SetUser(c)
+
 	if err := c.ShouldBind(obj); err != nil {
 		if err == io.EOF {
 			panic("没有传入参数，请使用post json传入参数")
@@ -125,7 +127,6 @@ func (t *Controller) Add(c *gin.Context) {
 	}
 
 	obj.SetCode()
-	obj.SetUser(c)
 
 	if err := t.DB.Create(obj).Error; err != nil {
 		panic(err)
