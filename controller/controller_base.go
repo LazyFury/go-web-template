@@ -40,11 +40,7 @@ type (
 // GetAuth GetAuth
 func (t *Controller) GetAuth() Auth {
 	if t.Auth == nil {
-		return func(c *gin.Context, must bool) xmodel.Middleware {
-			return func(db *gorm.DB) *gorm.DB {
-				return db
-			}
-		}
+		panic("未设置 controller.Auth 请联系开发人员")
 	}
 	return t.Auth
 }
