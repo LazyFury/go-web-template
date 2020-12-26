@@ -104,7 +104,7 @@ func (u *Uploader) uploadBase(file *multipart.FileHeader, acceptsExt []string, f
 
 	url, err = u.UploadMethod(fileName, src)
 	if url == "" {
-		err = errors.New("上传失败")
+		// err = errors.New("上传失败")
 		return
 	}
 	return
