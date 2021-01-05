@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Treblex/go-web-template/model"
 	"github.com/Treblex/go-web-template/tools"
-	"github.com/Treblex/go-web-template/xmodel"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -29,12 +29,12 @@ type BaseInterface interface {
 type (
 	// Controller Controller
 	Controller struct {
-		DB    *xmodel.GormDB
-		Model xmodel.Controller
+		DB    *model.GormDB
+		Model model.Controller
 		Auth
 	}
 	// Auth CheckUser
-	Auth func(c *gin.Context, must bool) xmodel.Middleware
+	Auth func(c *gin.Context, must bool) model.Middleware
 )
 
 // GetAuth GetAuth
@@ -70,7 +70,7 @@ func (t *Controller) Update(c *gin.Context) {
 	if id == "" {
 		panic("请输入id")
 	}
-	obj := t.Model.Object().(xmodel.Controller)
+	obj := t.Model.Object().(model.Controller)
 	where := map[string]interface{}{
 		"id": id,
 	}
@@ -96,7 +96,7 @@ func (t *Controller) Delete(c *gin.Context) {
 	if id == "" {
 		panic("请输入id")
 	}
-	obj := t.Model.Object().(xmodel.Controller)
+	obj := t.Model.Object().(model.Controller)
 	row := t.DB.Where(map[string]interface{}{
 		"id": id,
 	})
@@ -112,8 +112,8 @@ func (t *Controller) Delete(c *gin.Context) {
 
 // Add Add
 func (t *Controller) Add(c *gin.Context) {
-	obj := t.Model.Object().(xmodel.Controller)
-	obj.SetUser(c)
+	obj := t.Model.Object().(model.Controller)
+	obj.SetUser(c, obj)
 
 	if err := c.ShouldBind(obj); err != nil {
 		if err == io.EOF {
@@ -140,7 +140,7 @@ func (t *Controller) ListPaging(c *gin.Context) {
 }
 
 // DefaultListPaging DefaultListPaging
-func (t *Controller) DefaultListPaging(c *gin.Context, midd xmodel.Middleware) {
+func (t *Controller) DefaultListPaging(c *gin.Context, midd model.Middleware) {
 	ListPaging(c, t.Model.Objects(), t.DB,
 		t.Model.Result,
 		func(db *gorm.DB) *gorm.DB { return db.Select([]string{"*"}) },
@@ -278,7 +278,7 @@ func (t *Controller) Count(c *gin.Context) {
 }
 
 // ListPaging 处理通用 page size orderby search
-func ListPaging(c *gin.Context, obj interface{}, db *xmodel.GormDB, result func(data interface{}) interface{}, pagingMidd xmodel.Middleware, midd ...xmodel.Middleware) {
+func ListPaging(c *gin.Context, obj interface{}, db *model.GormDB, result func(data interface{}) interface{}, pagingMidd model.Middleware, midd ...model.Middleware) {
 	objModel := db.GetObjectsOrEmpty(obj, nil, func(db *gorm.DB) *gorm.DB {
 		for _, mid := range midd {
 			if mid != nil {
@@ -288,7 +288,7 @@ func ListPaging(c *gin.Context, obj interface{}, db *xmodel.GormDB, result func(
 		return db
 	})
 
-	page, size := xmodel.GetPagingParams(c)
+	page, size := model.GetPagingParams(c)
 
 	if err := objModel.Paging(page, size, pagingMidd); err != nil {
 		panic(err)
