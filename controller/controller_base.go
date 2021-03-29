@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/Treblex/go-web-template/model"
-	"github.com/Treblex/go-web-template/tools"
+	"github.com/Treblex/go-web-template/response"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -87,7 +87,7 @@ func (t *Controller) Update(c *gin.Context) {
 	if err := t.DB.Where(where).Updates(obj).Error; err != nil {
 		panic(err)
 	}
-	c.JSON(http.StatusCreated, tools.JSONSuccess("更新成功", nil))
+	c.JSON(http.StatusCreated, response.JSONSuccess("更新成功", nil))
 }
 
 // Delete Delete
@@ -107,7 +107,7 @@ func (t *Controller) Delete(c *gin.Context) {
 	if row.RowsAffected == 0 {
 		panic("数据不存在!")
 	}
-	c.JSON(http.StatusOK, tools.JSONSuccess("删除成功", nil))
+	c.JSON(http.StatusOK, response.JSONSuccess("删除成功", nil))
 }
 
 // Add Add
@@ -131,7 +131,7 @@ func (t *Controller) Add(c *gin.Context) {
 	if err := t.DB.Create(obj).Error; err != nil {
 		panic(err)
 	}
-	c.JSON(http.StatusCreated, tools.JSONSuccess("添加成功", obj))
+	c.JSON(http.StatusCreated, response.JSONSuccess("添加成功", obj))
 }
 
 // ListPaging ListPaging
@@ -162,7 +162,7 @@ func (t *Controller) ListAll(c *gin.Context) {
 		panic(err)
 	}
 	obj = t.Model.Result(obj)
-	c.JSON(http.StatusOK, tools.JSONSuccess("", obj))
+	c.JSON(http.StatusOK, response.JSONSuccess("", obj))
 }
 
 // Detail Detail
@@ -181,10 +181,10 @@ func (t *Controller) Detail(c *gin.Context) {
 			"code": id,
 		})
 	}, t.GetAuth()(c, true)); err != nil {
-		panic(tools.NotFound)
+		panic(response.NotFound)
 	}
 	obj = t.Model.Result(obj)
-	c.JSON(http.StatusOK, tools.JSONSuccess("", obj))
+	c.JSON(http.StatusOK, response.JSONSuccess("", obj))
 }
 
 // Count Count
@@ -271,7 +271,7 @@ func (t *Controller) Count(c *gin.Context) {
 	if row.Error != nil {
 		panic(row.Error)
 	}
-	c.JSON(http.StatusOK, tools.JSONSuccess("", map[string]interface{}{
+	c.JSON(http.StatusOK, response.JSONSuccess("", map[string]interface{}{
 		"total": &n,
 		"list":  list,
 	}))
@@ -295,5 +295,5 @@ func ListPaging(c *gin.Context, obj interface{}, db *model.GormDB, result func(d
 	}
 
 	objModel.Result.List = result(objModel.Result.List)
-	c.JSON(http.StatusOK, tools.JSONSuccess("", objModel.Result))
+	c.JSON(http.StatusOK, response.JSONSuccess("", objModel.Result))
 }
