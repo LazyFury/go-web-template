@@ -45,6 +45,7 @@ func ParseError(r interface{}) Result {
 		result.Message = StatusText(err)
 	}
 	if err, ok := r.(int); ok {
+		result.Code = ErrCode(err)
 		result.Message = StatusText(ErrCode(err))
 	}
 	//完整错误类型
