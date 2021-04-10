@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Treblex/go-web-template/model"
-	"github.com/Treblex/go-web-template/response"
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/go-web-template/model"
+	"github.com/lazyfury/go-web-template/response"
 	"gorm.io/gorm"
 )
 

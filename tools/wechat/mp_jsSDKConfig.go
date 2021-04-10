@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Treblex/go-web-template/tools"
+	"github.com/lazyfury/go-web-template/tools"
 )
 
 //JsAPIConfig 换取微信分享 jsapi授权

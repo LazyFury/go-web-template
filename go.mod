@@ -1,4 +1,4 @@
-module github.com/Treblex/go-web-template
+module github.com/lazyfury/go-web-template
 
 go 1.15
 
