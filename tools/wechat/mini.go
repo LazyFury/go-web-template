@@ -12,9 +12,9 @@ import (
 
 // Mini Mini
 type Mini struct {
-	Appid       string `json:"appid"`
-	Appsecret   string `json:"appsecret"`
-	AssessToken tokenType
+	Appid       string    `json:"appid"`
+	Appsecret   string    `json:"appsecret"`
+	AssessToken tokenType `json:"-"`
 }
 type result struct {
 	ErrCode int    `json:"errcode"`

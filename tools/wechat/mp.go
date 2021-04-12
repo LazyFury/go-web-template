@@ -25,6 +25,9 @@ func (m *MP) LoginRedirect(redirectURI string) (url string) {
 func (m *MP) GetAccessToken() (token string, err error) {
 	// 如果accesstken超时 60为timeout 防止请求超时
 	if m.AccessToken.ExpiresIn < time.Now().Unix()-60 {
+		if m.Appid == "" || m.Appsecret == "" {
+			return "", errors.New("请先配置微信公众号appid与密钥")
+		}
 		err = m.AccessToken.sendAccessTokenReq(m.Appid, m.Appsecret)
 	}
 	token = m.AccessToken.AccessToken
