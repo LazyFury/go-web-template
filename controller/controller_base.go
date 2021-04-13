@@ -131,7 +131,7 @@ func (t *Controller) Add(c *gin.Context) {
 	if err := t.DB.Create(obj).Error; err != nil {
 		panic(err)
 	}
-	c.JSON(http.StatusCreated, response.JSONSuccess("添加成功", obj))
+	c.JSON(http.StatusCreated, response.JSON(response.StatusCreated, "", obj))
 }
 
 // ListPaging ListPaging

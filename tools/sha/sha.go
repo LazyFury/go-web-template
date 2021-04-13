@@ -15,7 +15,10 @@ type Sha1 struct {
 
 // EnCode Encode
 func (s *Sha1) EnCode(str string) string {
-	c, _ := aes.NewCipher([]byte(s.Key))
+	c, err := aes.NewCipher([]byte(s.Key))
+	if err != nil {
+		panic(err)
+	}
 	strNew := []byte(str)
 
 	cfb := cipher.NewCFBEncrypter(c, []byte(s.IV))

@@ -135,7 +135,7 @@ func (o *Objects) Paging(page int, size int, args ...Middleware) (err error) {
 }
 
 //GetObjectOrNotFound 获取某一条数据
-//gorm  first查询接收空条件，在某些情况下会操作到错误到数据
+//gorm  查询接收空条件，在某些情况下会操作到错误到数据
 func (g *GormDB) GetObjectOrNotFound(obj interface{}, query map[string]interface{}, midd ...Middleware) (err error) {
 	row := g.Model(obj)
 	if query != nil {

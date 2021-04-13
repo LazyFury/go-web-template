@@ -28,7 +28,8 @@ const (
 )
 const (
 	// LoginSuccess 登陆成功
-	LoginSuccess ErrCode = iota + 100
+	LoginSuccess  ErrCode = iota + 100
+	StatusCreated ErrCode = http.StatusCreated
 )
 const (
 	// AuthedError 认证失败
@@ -41,6 +42,10 @@ const (
 	RepeatUserName
 	// BindJSONErr 绑定json失败
 	BindJSONErr
+
+	InvalidJSONData
+	InvalidQueryData
+	InvalidFormData
 )
 
 type ErrorCodeTextInterface map[ErrCode]string
@@ -52,13 +57,18 @@ var ErrorCodeText = ErrorCodeTextInterface{
 	Errors:  "遇到错误",
 
 	// business
-	LoginSuccess:   "登陆成功",
+	LoginSuccess:  "登陆成功",
+	StatusCreated: "添加成功",
+
 	AuthedError:    "登陆超时",
 	NotFound:       "没有数据",
 	RepeatEmail:    "邮箱已存在",
 	RepeatUserName: "用户名已存在",
 	BindJSONErr:    "绑定失败,请检查参数",
 
+	InvalidJSONData:  "JSON参数错误",
+	InvalidFormData:  "Form参数错误",
+	InvalidQueryData: "Url参数错误",
 	// system
 	NoRoute:  "路由不存在",
 	NoMethod: "方法不存在",
