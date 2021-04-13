@@ -28,8 +28,8 @@ func DefaultCorsConfig() *CorsConfig {
 		AllowOrigins:     []string{"*"},
 		AllowAnyOrigin:   false,
 		AllowCredentials: true,
-		AllowHeaders:     DefaultAllowMethods,
-		AllowMethods:     DefaultAllowHeaders,
+		AllowHeaders:     DefaultAllowHeaders,
+		AllowMethods:     DefaultAllowMethods,
 	}
 }
 
