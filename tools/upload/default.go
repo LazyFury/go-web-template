@@ -24,7 +24,7 @@ func defaultUpload(fileName string, src io.Reader) (path string, err error) {
 	}
 	defer dst.Close()
 	// Copy文件流到新建到文件
-	if _, err := io.Copy(dst, src); err != nil {
+	if _, _err := io.Copy(dst, src); _err != nil {
 		err = errors.New("拷贝文件至目标失败")
 	}
 	// 相对目录

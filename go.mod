@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.5+incompatible
-	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/google/uuid v1.1.4
 	github.com/satori/go.uuid v1.2.0 // indirect

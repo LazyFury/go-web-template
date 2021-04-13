@@ -29,7 +29,7 @@ func NewAliOssUploader(ali AliOssConf) *Uploader {
 func (a *AliOssConf) aliyunOssUpload(name string, file io.Reader) (path string, err error) {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf(fmt.Sprintf("Err:%x", err))
+			fmt.Printf("Err:%x\n", err)
 		}
 	}()
 	client, err := oss.New(a.Endpoint, a.AccessKeyID, a.AccessKeySecret)
