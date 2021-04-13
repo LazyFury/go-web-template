@@ -21,13 +21,13 @@ func LogError(err interface{}, tips string) {
 }
 
 var (
-	ErrCodeTextMap = []ErrorCodeTextInterface{
+	ErrCodeTextArray = []ErrorCodeTextInterface{
 		ErrorCodeText,
 	}
 )
 
 func PushErrCodeTextMap(_map ErrorCodeTextInterface) {
 	if _map != nil {
-		ErrCodeTextMap = append(ErrCodeTextMap, _map)
+		ErrCodeTextArray = append(ErrCodeTextArray, _map)
 	}
 }

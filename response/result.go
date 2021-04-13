@@ -69,7 +69,10 @@ var BuildBy = time.Now()
 
 // StatusText StatusText
 func StatusText(code ErrCode) string {
-	msg := ErrorCodeText[code]
+	var msg = ""
+	for _, errCodeMap := range ErrCodeTextArray {
+		msg = errCodeMap[code]
+	}
 	if msg == "" {
 		msg = http.StatusText(int(code))
 	}
