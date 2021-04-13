@@ -25,7 +25,7 @@ func Recover(c *gin.Context) {
 				c.JSON(code, result)
 			}
 			// c.JSON(code, result)
-			LogError(fmt.Sprintf("URL:%s ;\nErr: %v", c.Request.URL.RequestURI(), result))
+			LogError(fmt.Sprintf("URL:%s ;\nErr: %v", c.Request.URL.RequestURI(), result), "Error")
 
 			// "打断response继续写入内容"
 			c.Abort()

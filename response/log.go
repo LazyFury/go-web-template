@@ -10,14 +10,14 @@ import (
 func Error(err interface{}) {
 	_, file, line, ok := runtime.Caller(1)
 	if ok {
-		LogError(fmt.Sprintf("%s %d", file, line))
+		LogError(fmt.Sprintf("path:%s:%d", file, line), "发生错误的文件")
 	}
 	panic(err)
 }
 
 // LogError LogError
-func LogError(err interface{}) {
-	log.Printf("\n\x1b[31m[Custom Debug Result]: %v \x1b[0m\n\n", err)
+func LogError(err interface{}, tips string) {
+	log.Printf("\x1b[31m[%s]: %v \x1b[0m\n", tips, err)
 }
 
 var (
