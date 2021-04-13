@@ -27,9 +27,9 @@ const (
 	NoMethod ErrCode = http.StatusMethodNotAllowed
 )
 const (
-	// LoginSuccess 登陆成功
-	LoginSuccess  ErrCode = iota + 100
 	StatusCreated ErrCode = http.StatusCreated
+	// LoginSuccess 登陆成功
+	LoginSuccess ErrCode = iota + 240
 )
 const (
 	// AuthedError 认证失败
