@@ -17,8 +17,7 @@ type Result struct {
 type ErrCode int
 
 const (
-	// Success Success
-	Success ErrCode = 1
+
 	// Errors 失败
 	Errors ErrCode = -1
 	// NoRoute NoRoute
@@ -27,9 +26,12 @@ const (
 	NoMethod ErrCode = http.StatusMethodNotAllowed
 )
 const (
-	StatusCreated ErrCode = http.StatusCreated
+	// Success Success
+	Success ErrCode = iota + 240
 	// LoginSuccess 登陆成功
-	LoginSuccess ErrCode = iota + 240
+	LoginSuccess
+
+	StatusCreated ErrCode = http.StatusCreated
 )
 const (
 	// AuthedError 认证失败
