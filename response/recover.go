@@ -16,7 +16,7 @@ func Recover(c *gin.Context) {
 			result := ParseError(r)
 
 			var code = c.Writer.Status()
-			result.Code = ErrCode(code)
+			// result.Code = ErrCode(code)
 
 			//返回内容
 			if IsReqFromHTML(c) && RecoverErrHtml {
