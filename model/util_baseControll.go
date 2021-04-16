@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/go-web-template/tools"
 	"gorm.io/gorm"
 )
 
@@ -39,4 +40,30 @@ type Model struct {
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
+}
+
+func (m *Model) SetID(id uint) {
+	m.ID = id
+}
+
+// interface
+func (m *Model) Result(data interface{}) interface{} {
+	return data
+}
+
+// SetCode SetCode
+func (m *Model) SetCode() (err error) {
+	_uuid, err := tools.UUID()
+	m.Code = _uuid
+	return
+}
+
+// Joins Joins
+func (m *Model) Joins(db *gorm.DB) *gorm.DB {
+	return db
+}
+
+// SetUser SetUser
+func (m *Model) SetUser(c *gin.Context, data interface{}) error {
+	return nil
 }
