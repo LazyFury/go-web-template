@@ -42,7 +42,6 @@ func New() *gin.Engine {
 
 	// 错误码配置
 	response.RecoverErrHtml = true
-	response.RecoverErrTemplateName = "err/error.html"
 
 	return g
 }

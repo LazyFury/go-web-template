@@ -66,6 +66,9 @@ func (p *Pagination) SetURLFormat(url string) string {
 
 // URL 获取url
 func (p *Pagination) URL(page int, size int) string {
+	if p.URLFormat == "" {
+		p.URLFormat = "?page=%d&size=%d"
+	}
 	return fmt.Sprintf(p.URLFormat, page, size)
 }
 

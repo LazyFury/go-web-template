@@ -7,7 +7,12 @@ import (
 )
 
 var RecoverErrHtml = false
-var RecoverErrTemplateName = "err/error.html"
+
+type RecoverRenderType func(c *gin.Context, code int, result *Result)
+
+var RecoverRender RecoverRenderType = func(c *gin.Context, code int, result *Result) {
+	c.HTML(code, "err.html", result)
+}
 
 // Recover 使用defer调用阻止panic中止程序
 func Recover(c *gin.Context) {
@@ -20,7 +25,7 @@ func Recover(c *gin.Context) {
 
 			//返回内容
 			if IsReqFromHTML(c) && RecoverErrHtml {
-				c.HTML(code, RecoverErrTemplateName, result)
+				RecoverRender(c, code, &result)
 			} else {
 				c.JSON(code, result)
 			}
