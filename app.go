@@ -5,15 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/go-web-template/response"
-	"github.com/lazyfury/go-web-template/tools"
 )
 
 // New 初始化
 func New() *gin.Engine {
 	g := gin.New()
-
-	// 跨域配置
-	g.Use(tools.DefaultCors)
 
 	// 自定义recover
 	g.Use(response.Recover)
