@@ -80,4 +80,6 @@ func Cors(c *gin.Context, config *CorsConfig) {
 	if req.Method == http.MethodOptions {
 		c.Status(http.StatusNoContent)
 	}
+
+	c.Next()
 }

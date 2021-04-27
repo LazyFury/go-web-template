@@ -3,86 +3,58 @@ package layout
 import (
 	"bytes"
 	"html/template"
+	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/go-web-template/response"
-	tools "github.com/lazyfury/go-web-template/tools/template"
 )
 
 type (
+	Layout struct {
+		BaseTemplate string
+		Tmpl         *template.Template
+	}
+
 	LayoutParams struct {
-		Header             map[string]interface{}
-		Data               map[string]interface{}
-		Footer             map[string]interface{}
-		TemplateName       string
-		HeaderTemplateName string
-		FooterTemplateName string
-		Template           *template.Template
+		Header       map[string]interface{}
+		Data         map[string]interface{}
+		Footer       map[string]interface{}
+		TemplateName string
+		Layout       *Layout
 	}
 )
 
-var Bootstrap *template.Template
-
-func InitBootstrap(dir string, parent string, funcs template.FuncMap) {
-	Bootstrap = template.Must(tools.ParseGlob(template.New("main").Funcs(funcs), dir, parent))
-}
-
-func New(name string, args ...map[string]interface{}) *LayoutParams {
-	data := map[string]interface{}{}
-
-	for _, arg := range args {
-		for k := range arg {
-			data[k] = arg[k]
-		}
+func New(name string, tmpl *template.Template) *Layout {
+	return &Layout{
+		BaseTemplate: name,
+		Tmpl:         tmpl,
 	}
-
-	return &LayoutParams{
-		Data:         data,
-		TemplateName: name,
-		Template:     Bootstrap,
-		Header:       map[string]interface{}{},
-		Footer:       map[string]interface{}{},
-	}
-}
-func Render(c *gin.Context, name string, args ...map[string]interface{}) {
-	layout := New(name, args...)
-	layout.Render(c)
 }
 
 func (p *LayoutParams) bind(c *gin.Context) {
 	// header
 	p.Header["path"] = c.Request.URL.String()
-
 	// footer
 }
-func (p *LayoutParams) Render(c *gin.Context) {
 
-	w := bytes.NewBuffer([]byte(""))
-	if p.HeaderTemplateName == "" {
-		p.HeaderTemplateName = "header"
-	}
-	if p.FooterTemplateName == "" {
-		p.FooterTemplateName = "footer"
-	}
+var m = &sync.RWMutex{}
 
-	p.bind(c)
+func (p *LayoutParams) RenderPage() template.HTML {
+	m.Lock()
+	defer m.Unlock()
+	var w = bytes.NewBuffer([]byte(""))
 
-	tmpl := p.Template.New("layout")
-	err := tmpl.ExecuteTemplate(w, p.HeaderTemplateName, p.Header)
-	if err != nil {
+	if err := p.Layout.Tmpl.ExecuteTemplate(w, p.TemplateName, p.Data); err != nil {
 		response.Error(err)
 	}
-	err = tmpl.ExecuteTemplate(w, p.TemplateName, p.Data)
-	if err != nil {
-		response.Error(err)
-	}
-	err = tmpl.ExecuteTemplate(w, p.FooterTemplateName, p.Footer)
-	if err != nil {
-		response.Error(err)
-	}
+
 	html := template.HTML(w.String())
-	_, err = c.Writer.Write([]byte(html))
-	if err != nil {
-		response.Error(err)
-	}
+	return html
+}
+
+func (l *Layout) Render(c *gin.Context, params *LayoutParams) {
+	params.Layout = l
+	params.bind(c)
+	c.HTML(http.StatusOK, l.BaseTemplate, params)
 }
