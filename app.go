@@ -64,11 +64,10 @@ func New() *App {
 	app := &App{
 		Engine: gin.New(),
 		PreHandleFunc: []gin.HandlerFunc{
+			response.Recover,
 			gin.Logger(),
 		},
-		LastHandleFunc: []gin.HandlerFunc{
-			response.Recover,
-		},
+		LastHandleFunc: []gin.HandlerFunc{},
 		NoMethodHandleFunc: []gin.HandlerFunc{
 			NoMethod,
 		},
