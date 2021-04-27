@@ -1,4 +1,4 @@
-package tools
+package gwt
 
 import (
 	"net/http"
@@ -11,7 +11,6 @@ import (
 type (
 	CorsConfig struct {
 		AllowOrigins     []string
-		AllowAnyOrigin   bool
 		AllowMethods     []string
 		AllowHeaders     []string
 		AllowCredentials bool
@@ -26,7 +25,6 @@ var (
 func DefaultCorsConfig() *CorsConfig {
 	return &CorsConfig{
 		AllowOrigins:     []string{"*"},
-		AllowAnyOrigin:   false,
 		AllowCredentials: true,
 		AllowHeaders:     DefaultAllowHeaders,
 		AllowMethods:     DefaultAllowMethods,
@@ -40,11 +38,12 @@ func DefaultCors(c *gin.Context) {
 //Cors 自己尝试的cors配置实现
 func Cors(c *gin.Context, config *CorsConfig) {
 	req := c.Request
-	origin := c.Request.Header.Get("Origin")
+	origin := c.Request.Host
 	if len(origin) == 0 {
 		// request is not a CORS request
 		return
 	}
+
 	// host := c.Request.Host
 
 	// if origin == "http://"+host || origin == "https://"+host {
@@ -66,8 +65,8 @@ func Cors(c *gin.Context, config *CorsConfig) {
 		}
 	}
 
-	// 如果在名单中  且 没有开放任意域名通过
-	if inAllow == 0 && !config.AllowAnyOrigin {
+	// 如果不在名单中  且 没有开放任意域名通过
+	if inAllow == 0 {
 		c.AbortWithStatus(http.StatusForbidden)
 		return
 	}
